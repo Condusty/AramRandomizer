@@ -51,6 +51,7 @@ const TeamRandomizer = () => {
                 placeholder="Enter names"
                 value={input}
                 onChange={handleInputChange}
+                onKeyDown={(e) => { if (e.key === "Enter") { addPlayerList(); } }} //if enter key is pressed, add player to list
             />
             <button onClick={addPlayerList}>Add</button>
             <button onClick={() => splitListRandomly(playerList)}>Create Random Teams</button>
