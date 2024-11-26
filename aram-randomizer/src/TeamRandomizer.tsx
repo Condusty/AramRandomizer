@@ -1,46 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const TeamRandomizer = () => {
-    const [input, setInput] = useState<string>("");
-    const playerList: string[] = [];
-    let team1list: string[] = [];
-    let team2list: string[] = [];
+    const [input, setInput] = useState<string>(""); // Zustand für das Eingabefeld
+    const [playerList, setPlayerList] = useState<string[]>([]); // Zustand für die Liste der Spieler
+    const [team1list, setTeam1List] = useState<string[]>([]); // Zustand für Team 1
+    const [team2list, setTeam2List] = useState<string[]>([]); // Zustand für Team 2
 
+    // Eingabefeld aktualisieren
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value);
-    }
+    };
 
-    const splitListRandomly = (inputList: string[]): [string[], string[]] => {
-        const list1: string[] = [];
-        const list2: string[] = [];
-        const shuffledList = [...inputList].sort(() => 0.5 - Math.random());
+    // Spieler hinzufügen
+    const addPlayerList = () => {
+        if (input.trim() !== "") {
+            setPlayerList((prevList) => [...prevList, input.trim()]); // Spieler hinzufügen
+            setInput(""); // Eingabefeld zurücksetzen
+        }
+    };
+
+    // Teams zufällig aufteilen
+    const splitListRandomly = (list: string[]) => {
+        const shuffledList = [...list].sort(() => 0.5 - Math.random());
+        const team1: string[] = [];
+        const team2: string[] = [];
 
         shuffledList.forEach((item, index) => {
             if (index % 2 === 0) {
-                list1.push(item);
+                team1.push(item);
             } else {
-                list2.push(item);
+                team2.push(item);
             }
         });
 
-        return [list1, list2];
+        setTeam1List(team1);
+        setTeam2List(team2);
     };
 
-    function addPlayerList(input: string) {
-        playerList.push(input);
-        console.log(playerList);
-        input = "";
-    }
+    // Teams aktualisieren, wenn playerList geändert wird
+    useEffect(() => {
+        if (playerList.length > 0) {
+            splitListRandomly(playerList);
+        }
+    }, [playerList]); // Abhängigkeit: Wird ausgeführt, wenn playerList sich ändert
 
     return (
         <div>
-            <input type="text" placeholder="Enter names" onChange={(e) => handleInputChange(e)} />
-            <button onClick={() => addPlayerList(input)}>
-                Add
-            </button>
-            <button onClick={() => splitListRandomly(playerList)}>
-                Create Random Teams
-            </button>
+            <input
+                type="text"
+                placeholder="Enter names"
+                value={input}
+                onChange={handleInputChange}
+            />
+            <button onClick={addPlayerList}>Add</button>
+            <button onClick={() => splitListRandomly(playerList)}>Create Random Teams</button>
             <div>
                 <h3>Team 1</h3>
                 <ul>
@@ -58,7 +71,7 @@ const TeamRandomizer = () => {
                 </ul>
             </div>
         </div>
-    )
+    );
 };
 
 export default TeamRandomizer;
