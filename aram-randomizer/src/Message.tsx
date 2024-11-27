@@ -1,7 +1,7 @@
-function Message(){
-    return(
-        <div>
-            <h1>Hello World</h1>
+function Message() {
+    return (
+        <div >
+            <h1 className="text-green-400 text-center font-bold">Aram Randomizer</h1>
         </div>
     )
 }
