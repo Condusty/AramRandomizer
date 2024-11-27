@@ -6,10 +6,10 @@ function App() {
 
   return (
     <>
-      <div>
+      < div >
         <Message />
         <TeamRandomizer />
-      </div>
+      </div >
     </>
   )
 }
